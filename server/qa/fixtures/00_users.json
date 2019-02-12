@@ -1,0 +1,22 @@
+[
+  {
+    "model": "auth.User",
+    "pk": 1,
+    "fields": {
+      "is_staff": true,
+      "email": "dev.trace.off@gmail.com",
+      "username": "awais",
+      "password": "4w415_123"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 2,
+    "fields": {
+      "is_staff": true,
+      "email": "dev.trace.on@gmail.com",
+      "username": "exudios",
+      "password": "4w415_321"
+    }
+  }
+]

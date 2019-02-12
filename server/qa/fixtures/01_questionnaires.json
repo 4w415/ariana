@@ -1,0 +1,150 @@
+[
+  {
+    "model": "qa.Questionnaire",
+    "pk": 1,
+    "fields": {
+      "name": "Personal Advisory.",
+      "created_at": "2019-02-15 15:44:07.733236",
+      "updated_at": "2019-02-15 15:44:07.733236",
+      "author": 1,
+      "qtree": {
+        "question": "What is your name?",
+        "answers": {
+          "1": "Mario",
+          "2": "Lugio",
+          "3": "Sonic",
+          "4": "Pikachu"
+        },
+        "1": {
+          "question": "How many times have you saved the Princess?",
+          "answers": {
+            "1.1": "Who cares? I hater her.",
+            "1.2": "Many times."
+          }
+        },
+        "1.1": {
+          "statement": "Keep up this attitude. You're destined to be famous or infamous."
+        },
+        "1.2": {
+          "statement": "You poor soul. May death brings some peace to you."
+        },
+        "2": {
+          "statement": "Not gonna happen. Kill Mario, maybe?"
+        },
+        "3": {
+          "question": "How fast can you run for real?",
+          "answers": {
+            "3.1": "I lost my legs.",
+            "3.2": "As fast as I will to.",
+            "3.3": "Godspeed."
+          }
+        },
+        "3.1": {
+          "statement": "We're done here."
+        },
+        "3.2": {
+          "question": "Have you ever got a speed ticket?",
+          "answers": {
+            "3.2.1": "No.",
+            "3.2.2": "Yes."
+          }
+        },
+        "3.2.1": {
+          "statement": "Get one and come back!"
+        },
+        "3.2.2": {
+          "statement": "Slow and steady tend to win the races, unless you don't want to be cool. Then, go fast."
+        },
+        "3.3": {
+          "statement": "Remember God before He remembers you. -Amen"
+        },
+        "4": {
+          "question": "How do you feel about NETFLIX?",
+          "answers": {
+            "4.1": "It's bad until it's not. Then it's very bad.",
+            "4.2": "I signed the NDA.",
+            "4.3": "I miss Ash!"
+          }
+        },
+        "4.1": {
+          "statement": "I'm glad to hear this. May the force be with you."
+        },
+        "4.2": {
+          "statement": "Okay, we'll take after the movie premier, then."
+        },
+        "4.3": {
+          "statement": "Every rise has a fall and every friendship has a cringe. It's up to us what we make of it."
+        }
+      }
+    }
+  },
+  {
+    "model": "qa.Questionnaire",
+    "pk": 2,
+    "fields": {
+      "name": "Exploring the World of Luck?",
+      "author": 2,
+      "created_at": "2019-02-15 17:44:07.733236",
+      "updated_at": "2019-02-15 17:44:07.733236",
+      "qtree": {
+        "question": "Select your favorite character.",
+        "answers": {
+          "1": "Alexander The Great",
+          "2": "Gilgamesh, The King of Babylon",
+          "3": "Jeanne D'Arc",
+          "4": "King Arthur",
+          "5": "The Disappointment, Donald Trump"
+        },
+        "1": {
+          "question": "Not bad. Select another character among these.",
+          "answers": {
+            "1.1": "Genghis Khan, The Sun of Mongolia",
+            "1.2": "Hannibal, The Tyrant"
+          }
+        },
+        "1.1": {
+          "statement": "Your lucky trait is: Abundance."
+        },
+        "1.2": {
+          "statement": "Your lucky trait is: Meat."
+        },
+        "2": {
+          "question": "Ah, he's among the greatest. Select one of the two.",
+          "answers": {
+            "2.1": "Limitless Gold but Slavery",
+            "2.2": "Limitless luxury but Death"
+          }
+        },
+        "2.1": {
+          "statement": "Your lucky trait is: Wrath."
+        },
+        "2.2": {
+          "statement": "Your lucky trait is: Eventuality."
+        },
+        "3": {
+          "statement": "Your lucky trait is: Pity."
+        },
+        "4": {
+          "statement": "Your lucky trait is: Struggle."
+        },
+        "5": {
+          "question": "Select one from the following.",
+          "answers": {
+            "5.1": "Make America Great Again",
+            "5.2": "Build a wall",
+            "5.3": "Time Machine"
+          }
+        },
+        "5.1": {
+          "statement": "Your lucky trait is: Joke's on you."
+        },
+        "5.2": {
+          "statement": "Your lucky trait is: Shutdown."
+        },
+        "5.3": {
+          "statement": "Your lucky trait is: Crying over Spilt Milk."
+        }
+      }
+    }
+  }
+]
