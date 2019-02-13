@@ -8,12 +8,14 @@
       "updated_at": "2019-02-15 15:44:07.733236",
       "author": 1,
       "qtree": {
-        "question": "What is your name?",
-        "answers": {
-          "1": "Mario",
-          "2": "Lugio",
-          "3": "Sonic",
-          "4": "Pikachu"
+        "0": {
+          "question": "What is your name?",
+          "answers": {
+            "1": "Mario",
+            "2": "Lugio",
+            "3": "Sonic",
+            "4": "Pikachu"
+          }
         },
         "1": {
           "question": "How many times have you saved the Princess?",
@@ -87,13 +89,15 @@
       "created_at": "2019-02-15 17:44:07.733236",
       "updated_at": "2019-02-15 17:44:07.733236",
       "qtree": {
-        "question": "Select your favorite character.",
-        "answers": {
-          "1": "Alexander The Great",
-          "2": "Gilgamesh, The King of Babylon",
-          "3": "Jeanne D'Arc",
-          "4": "King Arthur",
-          "5": "The Disappointment, Donald Trump"
+        "0": {
+          "question": "Select your favorite character.",
+          "answers": {
+            "1": "Alexander The Great",
+            "2": "Gilgamesh, The King of Babylon",
+            "3": "Jeanne D'Arc",
+            "4": "King Arthur",
+            "5": "The Disappointment, Donald Trump"
+          }
         },
         "1": {
           "question": "Not bad. Select another character among these.",

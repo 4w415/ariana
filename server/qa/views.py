@@ -1,75 +1,89 @@
 import json
-from django.shortcuts import render
-from django.conf import settings
+import logging
+
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+from .models import Questionnaire
+from rest_framework import viewsets
+from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from .serializers import (
+    ListQuestionnaireSerializer, GetQuestionnaireSerializer)
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter('[%(asctime)s] %(message)s'))
+logger.addHandler(handler)
+
 
 # Create your views here.
-def questionnaires(request, qid=None):
+@csrf_exempt
+@require_POST
+def log_interaction(request):
 
-    data = list()
-    questionnaires = settings.QUESTIONNAIRES
+    log = dict()
+    data = request.body.decode('utf8')
+    try:
+        data = json.loads(data)
+        log = data.get('log', dict())
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'decode_error'})
 
-    if (qid or qid == 0) and (qid <= 0 or qid > len(questionnaires)):
-        return JsonResponse({
-            'error': 'Invalid questionnaire ID provided.'
-        }, status=400)
- 
-    for index, qs in enumerate(questionnaires):
-        if qid and index + 1 != qid:
-            continue
-        try:
-            qs = json.load(open(qs, 'r'))
-            qs.pop('questions') if 'questions' in qs else None
-            data.append(qs)
+    if not log.get('qid'):
+        return JsonResponse({'status': 'qid_missing'})
 
-        except json.JSONDecodeError:
-            return JsonResponse({
-                'error': 'JSONDecodeError encountered for: %s' % qs
-            }, status=400)
+    if not log.get('path'):
+        return JsonResponse({'status': 'path_empty'})
 
-    return JsonResponse(data, safe=False)
+    qid = log.get('qid')
+    path = [str(x) for x in log.get('path')]
+
+    try:
+        qs = Questionnaire.objects.get(pk=qid)
+        first_question = qs.qtree['0']['question'] if qs.qtree.get(
+            '0') and qs.qtree['0'].get('question') else None
+
+        path_flow = [first_question]
+        for step in path:
+            for token, item in qs.qtree.items():
+                if not item.get('answers'):
+                    continue
+
+                if str(step) in item['answers']:
+                    path_flow.append(item['answers'][step])
+
+        logger.info('')
+        logger.info('Interaction log')
+        logger.info('%s', ' -> '.join(path_flow))
+        logger.info('')
+
+    except Questionnaire.DoesNotExist:
+        return JsonResponse({'status': 'qs_404'})
+
+    return JsonResponse({'status': 'ok'})
 
 
-def questions(request, qid, token=None):
+class QuestionnaireViewSet(viewsets.ModelViewSet):
 
-    questionnaires = settings.QUESTIONNAIRES
+    queryset = Questionnaire.objects.all()
+    serializer_class = ListQuestionnaireSerializer
 
-    if not qid:
-        return JsonResponse({
-            'error': 'No questionnaire ID was provided.'
-        }, status=400)
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return GetQuestionnaireSerializer
 
-    if qid and (qid <= 0 or qid > len(questionnaires)):
-        return JsonResponse({
-            'error': 'Invalid questionnaire ID provided.'
-        }, status=400)
- 
-    for index, qs in enumerate(questionnaires):
-        if index + 1 != qid:
-            continue
-            
-        try:
-            data = json.load(open(qs, 'r'))
-            if not data.get('questions'):
-                return JsonResponse({
-                    'error': 'No questions found in questionnaire.'
-                }, status=404)
-            
-            question = data['questions'][0]
-            if not token:
-                return JsonResponse({
-                    key: value for (key, value) in question.items()
-                    if key in ['question', 'answers', 'statement']
-                })
-            elif token and question.get(token):
-                return JsonResponse({
-                    key: value for (key, value) in question[token].items()
-                    if key in ['question', 'answers', 'statement']
-                })
+        return ListQuestionnaireSerializer
 
-        except:
-            return JsonResponse({
-                'error': 'JSONDecodeError encountered for: %s' % qs
-            }, status=400)
+    def retrieve(self, request, pk=None):
+        queryset = self.get_queryset()
+        qs = get_object_or_404(queryset, pk=pk)
+        key = request.query_params.get('key', '0')
+        qs.qtree = qs.qtree.pop(key) if qs.qtree.get(
+            key) else qs.qtree.pop('0')
 
-    return JsonResponse({})
+        serializer = GetQuestionnaireSerializer(qs)
+        return Response(serializer.data)
