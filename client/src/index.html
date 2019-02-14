@@ -14,7 +14,42 @@
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <style>
+      .init-loader {
+        font-family: Arial, Helvetica, sans-serif;
+        font-variant: all-small-caps;
+        font-size: 20px;
+        font-weight: 100;
+        letter-spacing: 5px;
+        opacity: 1;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: #01325d;
+        padding-top: 25vh;
+        text-align: center;
+        color: white;
+      }
+      .init-loader h1 {
+        position: relative;
+        top: 20%;
+      }
+      .fa.fa-spin {
+        position: relative;
+        top: 2px;
+        font-size: 16px;
+        font-weight: 100;
+      }
+    </style>
+    <div class="init-loader">
+      <h1>
+        <i class="fa fa-refresh fa-spin"></i>
+        Loading ariana demo
+      </h1>
+    </div>
+  </app-root>
+  
 </body>
 
 </html>
