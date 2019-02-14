@@ -12,6 +12,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   okeys = Object.keys;
   selectedQS: any = {};
+  loading: Boolean = true;
   interactionLogged: Boolean = false;
   interaction: Array<any> = new Array<any>();
   questionnaires: Array<any> = new Array<any>();
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.qsService.getQuestionnaires().subscribe((response: any) => {
       this.questionnaires = response.results;
+      this.loading = false;
       console.log(this.questionnaires);
     }, (error: any) => {
       console.error(error);
@@ -88,6 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   askQuestion(token?: any) {
 
+    this.loading = true;
     const promise = new Promise((resolve, reject) => {
       if (!token) {
         this.qsService.getQuestion(this.selectedQS.pk, token)
@@ -117,6 +120,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     promise.then(() => {
+
+      this.loading = false;
       this.interaction.push({
         type: 'replies',
         text: this.selectedQS.qtree.question || this.selectedQS.qtree.statement

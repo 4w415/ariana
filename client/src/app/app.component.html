@@ -15,6 +15,9 @@
         </p>
       </div>
       <div id="contacts">
+        <p *ngIf="loading && okeys(selectedQS).length == 0" class="loader">
+          <i class="fa fa-refresh fa-spin"></i>&nbsp;Loading data....
+        </p>
         <ul *ngIf="questionnaires">
           <li class="contact" *ngFor="let qs of questionnaires"
            (click)="switchQS(qs)" [class.active]="selectedQS.pk == qs.pk">
@@ -47,14 +50,19 @@
     </div>
     <div class="content">
       <div class="qs-header" *ngIf="okeys(selectedQS).length > 0">
-        <p class="title">{{ selectedQS.name }}</p>
+        <p class="title">{{ selectedQS.name }}
+          <span *ngIf="loading" class="loader">
+            <i class="fa fa-refresh fa-spin"></i>&nbsp;Loading data....
+          </span>
+        </p>
         <div class="social-media">
           <i class="fa fa-facebook" aria-hidden="true" title="Facebook placeholder"></i>
           <i class="fa fa-twitter" aria-hidden="true" title="Twitter placeholder"></i>
           <i class="fa fa-instagram" aria-hidden="true" title="Instagram placeholder"></i>
         </div>
       </div>
-      <div class="messages" *ngIf="okeys(selectedQS).length > 0">
+      <div class="messages" *ngIf="okeys(selectedQS).length > 0"
+        [class.opless]="loading">
         <ul>
           <li *ngFor="let item of interaction"
             [class.sent]="item.type == 'sent'"

@@ -63,15 +63,6 @@ body {
   }
 }
 
-#frame #sidepanel #profile.expanded .wrap {
-  height: 210px;
-  line-height: initial;
-}
-
-#frame #sidepanel #profile.expanded .wrap p {
-  margin-top: 20px;
-}
-
 #frame #sidepanel #profile .wrap {
   height: 60px;
   line-height: 60px;
@@ -132,6 +123,13 @@ body {
   #frame #sidepanel #search {
     display: none;
   }
+}
+
+#frame .loader {
+  letter-spacing: 0.8px;
+  font-variant: all-small-caps;
+  text-align: center;
+  padding: 10px; 
 }
 
 #frame #sidepanel #contacts {
@@ -389,6 +387,11 @@ body {
   max-height: calc(100% - 93px);
   overflow-y: scroll;
   overflow-x: hidden;
+  transition: 0.4s all ease;
+}
+
+#frame .content .messages.opless {
+  opacity: 0.4;
 }
 
 @media screen and (max-width: 735px) {
