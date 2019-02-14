@@ -31,13 +31,13 @@ def log_interaction(request):
         data = json.loads(data)
         log = data.get('log', dict())
     except json.JSONDecodeError:
-        return JsonResponse({'status': 'decode_error'})
+        return JsonResponse({'status': 'decode_error'}, status=400)
 
     if not log.get('qid'):
-        return JsonResponse({'status': 'qid_missing'})
+        return JsonResponse({'status': 'qid_missing'}, status=404)
 
     if not log.get('path'):
-        return JsonResponse({'status': 'path_empty'})
+        return JsonResponse({'status': 'path_empty'}, status=404)
 
     qid = log.get('qid')
     path = [str(x) for x in log.get('path')]
@@ -62,7 +62,7 @@ def log_interaction(request):
         logger.info('')
 
     except Questionnaire.DoesNotExist:
-        return JsonResponse({'status': 'qs_404'})
+        return JsonResponse({'status': 'qs_404'}, status=404)
 
     return JsonResponse({'status': 'ok'})
 

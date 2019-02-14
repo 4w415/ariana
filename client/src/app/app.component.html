@@ -1,21 +1,101 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
 <router-outlet></router-outlet>
+<body>
+  <div id="frame">
+    <div id="sidepanel">
+      <div id="profile">
+        <div class="wrap">
+          <img id="profile-img" src="../assets/images/user1.png" class="online" alt="" />
+          <p>Anonymous User</p>
+        </div>
+      </div>
+      <div id="search">
+        <p>
+          <small><i class="fa fa-list" aria-hidden="true"></i></small>&nbsp;
+          Available Questionnaires
+        </p>
+      </div>
+      <div id="contacts">
+        <ul *ngIf="questionnaires">
+          <li class="contact" *ngFor="let qs of questionnaires"
+           (click)="switchQS(qs)" [class.active]="selectedQS.pk == qs.pk">
+            <div class="wrap">
+              <!-- <span class="contact-status online"></span> -->
+              <!-- <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" /> -->
+              <div class="meta">
+                <p class="name">{{ qs.name }}</p>
+                <p class="preview">
+                  <small>
+                    <i class="fa fa-clock-o"></i>&nbsp;
+                    {{ qs.created_at | date: 'dd-MMM-yy H:mm' }}
+                  </small>
+                  <small class="author">
+                    <i class="fa fa-user"></i>&nbsp;
+                    {{ qs.author.username }}
+                  </small>
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="bottom-bar">
+        <button id="settings" title="Just a placeholder">
+          <i class="fa fa-cog fa-fw" aria-hidden="true"></i>
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="qs-header" *ngIf="okeys(selectedQS).length > 0">
+        <p class="title">{{ selectedQS.name }}</p>
+        <div class="social-media">
+          <i class="fa fa-facebook" aria-hidden="true" title="Facebook placeholder"></i>
+          <i class="fa fa-twitter" aria-hidden="true" title="Twitter placeholder"></i>
+          <i class="fa fa-instagram" aria-hidden="true" title="Instagram placeholder"></i>
+        </div>
+      </div>
+      <div class="messages" *ngIf="okeys(selectedQS).length > 0">
+        <ul>
+          <li *ngFor="let item of interaction"
+            [class.sent]="item.type == 'sent'"
+            [class.replies]="item.type == 'replies'">
+            <p>{{ item.text }}</p>
+          </li>
+          <!-- <li class="replies" *ngIf="selectedQS.qtree">
+            <p>{{ selectedQS.qtree.question || selectedQS.qtree.statement }}</p>
+          </li> -->
+          <!-- <li class="sent">
+            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+            <p>What are you talking about? You do what they say or they shoot you.</p>
+          </li>
+          <li class="replies">
+            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+            <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a
+              hundred and forty six other things.</p>
+          </li> -->
+        </ul>
+      </div>
+      <div class="message-input" *ngIf="okeys(selectedQS).length > 0">
+        <div class="wrap" *ngIf="selectedQS.qtree && selectedQS.qtree.answers">
+          <p class="answer" *ngFor="let token of okeys(selectedQS.qtree.answers)"
+            (click)="askQuestion(token)">
+            {{ selectedQS.qtree.answers[token] }}
+          </p>
+        </div>
+        <div class="wrap" *ngIf="selectedQS.qtree && selectedQS.qtree.statement">
+          <p class="statement">
+            Conversation has been completed.
+            <a href="#" (click)="switchQS(selectedQS, true)">Click to Restart.</a>
+          </p>
+          <p class="logged" *ngIf="interactionLogged">Interaction has been logged on server console.</p>
+        </div>
+      </div>
+      <div class="no-message" *ngIf="okeys(selectedQS).length == 0">
+        <i class="fa fa-comments fa-5x"></i>&nbsp;
+        <p>
+          Select a questionnaire on left to interact.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
